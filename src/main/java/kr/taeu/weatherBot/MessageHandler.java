@@ -92,8 +92,8 @@ public class MessageHandler {
         this.reply(replyToken, Arrays.asList(
             new TextMessage("현재날씨("+ dt +" 기준)\n"
                 + "서울(날씨: "+ currentWeatherResponse.getWeatherMain() +")\n"
-                + "기온: " + currentWeatherResponse.getTemp() + "\n"
-                + "체감온도: " + currentWeatherResponse.getFeelsLike() + "\n"
+                + "\u1F321기온: " + currentWeatherResponse.getTemp() + "\n"
+                + "\u1F321체감온도: " + currentWeatherResponse.getFeelsLike() + "\n"
                 + "습도: " + currentWeatherResponse.getHumidity() + "\n")));
         
         this.replyText(replyToken, currentWeatherResponse.toString());

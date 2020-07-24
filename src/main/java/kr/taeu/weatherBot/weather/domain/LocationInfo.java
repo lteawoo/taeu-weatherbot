@@ -6,10 +6,10 @@ import lombok.ToString;
 @Getter
 @ToString
 public class LocationInfo {
-  private String lat;
-  private String lon;
+  private Double lat;
+  private Double lon;
   private String timezone;
-  private String timezone_offset;
+  private Long timezoneOffset;
   private Weather current;
 //  private Weather minutely;
 //  private Weather hourly;

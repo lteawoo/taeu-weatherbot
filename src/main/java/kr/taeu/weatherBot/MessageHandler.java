@@ -2,8 +2,12 @@ package kr.taeu.weatherBot;
 
 import static java.util.Collections.singletonList;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
 import com.linecorp.bot.client.LineMessagingClient;
@@ -21,6 +25,7 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 import kr.taeu.weatherBot.weather.WeatherApiHandler;
 import kr.taeu.weatherBot.weather.domain.LocationInfo;
+import kr.taeu.weatherBot.weather.dto.CurrentWeatherResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -69,7 +74,6 @@ public class MessageHandler {
 
               this.reply(replyToken, Arrays.asList(new TextMessage("Display name: " + profile.getDisplayName()),
                   new TextMessage("Status message: " + profile.getStatusMessage())));
-
             });
           }
         } else {
@@ -79,8 +83,17 @@ public class MessageHandler {
       }
       case "현재날씨": {
         log.info("현재 날씨 뿌려줌");
-        LocationInfo info = weatherApiHandler.callApi();
-        this.replyText(replyToken, info.toString());
+        CurrentWeatherResponse currentWeatherResponse = weatherApiHandler.getCurrentWeather();
+        
+        String dt = LocalDateTime.ofInstant(Instant.ofEpochMilli(currentWeatherResponse.getDt()), TimeZone.getDefault().toZoneId())
+            .format(DateTimeFormatter.ofPattern("YYYY-MM-DD HH:mm:ss"));
+        
+        this.reply(replyToken, Arrays.asList(
+            new TextMessage("현재날씨("+ dt +" 기준)"),
+            new TextMessage("서울\n"
+                + "기온: " + currentWeatherResponse.getTemp() + "\n")));
+        
+        this.replyText(replyToken, currentWeatherResponse.toString());
       }
       default:
         log.info("Returns echo message {}: {}", replyToken, text);

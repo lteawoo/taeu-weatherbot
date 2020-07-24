@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import kr.taeu.weatherBot.weather.domain.LocationInfo;
+import kr.taeu.weatherBot.weather.dto.CurrentWeatherResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -19,16 +20,20 @@ public class WeatherApiHandler {
   @RequestMapping(value="/test")
   @ResponseBody
   public String test() {
-    log.info("format: " + callApi());
+    log.info("format: " + getCurrentWeather());
     
     return "test";
   }
   
-  public LocationInfo callApi() {
+  private LocationInfo callApi() {
     RestTemplate restTemplate = new RestTemplate();
     String endpoint = WEATHER_API_ENDPOINT + "&lat=" + seoulLatitude + "&lon=" + seoulLongtitude;
     LocationInfo info = restTemplate.getForObject(endpoint, LocationInfo.class);
     
     return info;
+  }
+  
+  public CurrentWeatherResponse getCurrentWeather() {
+    return new CurrentWeatherResponse(callApi());
   }
 }

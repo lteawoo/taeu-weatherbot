@@ -24,7 +24,6 @@ import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 import kr.taeu.weatherBot.weather.WeatherApiHandler;
-import kr.taeu.weatherBot.weather.domain.LocationInfo;
 import kr.taeu.weatherBot.weather.dto.CurrentWeatherResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

@@ -4,6 +4,7 @@ import static java.util.Collections.singletonList;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
@@ -84,13 +85,16 @@ public class MessageHandler {
         log.info("현재 날씨 뿌려줌");
         CurrentWeatherResponse currentWeatherResponse = weatherApiHandler.getCurrentWeather();
         
-        String dt = LocalDateTime.ofInstant(Instant.ofEpochSecond(currentWeatherResponse.getDt()), TimeZone.getDefault().toZoneId())
+        String dt = LocalDateTime.ofInstant(Instant.ofEpochSecond(currentWeatherResponse.getDt())
+            , ZoneId.of(currentWeatherResponse.getTimezone()))
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         
         this.reply(replyToken, Arrays.asList(
             new TextMessage("현재날씨("+ dt +" 기준)\n"
-                + "서울\n"
-                + "기온: " + currentWeatherResponse.getTemp() + "\n")));
+                + "서울(날씨: "+ currentWeatherResponse.getWeatherMain() +")\n"
+                + "기온: " + currentWeatherResponse.getTemp() + "\n"
+                + "체감온도: " + currentWeatherResponse.getFeelsLike() + "\n"
+                + "습도: " + currentWeatherResponse.getHumidity() + "\n")));
         
         this.replyText(replyToken, currentWeatherResponse.toString());
       }

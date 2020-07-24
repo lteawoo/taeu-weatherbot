@@ -2,6 +2,7 @@ package kr.taeu.weatherBot.weather;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
@@ -31,8 +32,9 @@ public class WeatherApiHandler {
   public String test() {
     CurrentWeatherResponse res = getCurrentWeather();
     log.info("format: " + getCurrentWeather());
-    String dt = LocalDateTime.ofInstant(Instant.ofEpochSecond(res.getDt()), TimeZone.getDefault().toZoneId())
-       .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    String dt = LocalDateTime.ofInstant(Instant.ofEpochSecond(res.getDt())
+        , ZoneId.of(res.getTimezone()))
+        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     log.info(dt);
     
     return "test";

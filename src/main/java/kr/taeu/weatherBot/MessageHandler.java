@@ -19,6 +19,8 @@ import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
+import kr.taeu.weatherBot.weather.WeatherApiHandler;
+import kr.taeu.weatherBot.weather.domain.LocationInfo;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MessageHandler {
     private final LineMessagingClient lineMessagingClient;
+    private final WeatherApiHandler weatherApiHandler;
     
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
@@ -73,6 +76,11 @@ public class MessageHandler {
           this.replyText(replyToken, "Bot can't use profile API without user ID");
         }
         break;
+      }
+      case "현재날씨": {
+        log.info("현재 날씨 뿌려줌");
+        LocationInfo info = weatherApiHandler.callApi();
+        this.replyText(replyToken, info.toString());
       }
       default:
         log.info("Returns echo message {}: {}", replyToken, text);

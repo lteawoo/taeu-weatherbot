@@ -86,11 +86,11 @@ public class MessageHandler {
         CurrentWeatherResponse currentWeatherResponse = weatherApiHandler.getCurrentWeather();
         
         String dt = LocalDateTime.ofInstant(Instant.ofEpochSecond(currentWeatherResponse.getDt()), TimeZone.getDefault().toZoneId())
-            .format(DateTimeFormatter.ofPattern("YYYY-MM-DD HH:mm:ss"));
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         
         this.reply(replyToken, Arrays.asList(
-            new TextMessage("현재날씨("+ dt +" 기준)"),
-            new TextMessage("서울\n"
+            new TextMessage("현재날씨(\"+ dt +\" 기준)\n"
+                + "서울\n"
                 + "기온: " + currentWeatherResponse.getTemp() + "\n")));
         
         this.replyText(replyToken, currentWeatherResponse.toString());

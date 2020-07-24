@@ -1,5 +1,11 @@
 package kr.taeu.weatherBot.weather;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
+
+import org.checkerframework.checker.units.qual.Current;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +26,11 @@ public class WeatherApiHandler {
   @RequestMapping(value="/test")
   @ResponseBody
   public String test() {
+    CurrentWeatherResponse res = getCurrentWeather();
     log.info("format: " + getCurrentWeather());
+    String dt = LocalDateTime.ofInstant(Instant.ofEpochSecond(res.getDt()), TimeZone.getDefault().toZoneId())
+       .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    log.info(dt);
     
     return "test";
   }

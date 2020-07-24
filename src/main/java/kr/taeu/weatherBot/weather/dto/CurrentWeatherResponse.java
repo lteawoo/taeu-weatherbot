@@ -9,6 +9,8 @@ import lombok.ToString;
 @ToString
 public class CurrentWeatherResponse {
   private Long dt;
+  private String timezone;
+  private Long timezoneOffset;
   private Double temp;
   private Double feelsLike;
   private Double humidity;
@@ -19,6 +21,8 @@ public class CurrentWeatherResponse {
   
   public CurrentWeatherResponse(LocationInfo info) {
      this.dt = info.getCurrent().getDt();
+     this.timezone = info.getTimezone();
+     this.timezoneOffset = info.getTimezoneOffset();
      this.temp = info.getCurrent().getTemp();
      this.feelsLike = info.getCurrent().getFeelsLike();
      this.humidity = info.getCurrent().getHumidity();

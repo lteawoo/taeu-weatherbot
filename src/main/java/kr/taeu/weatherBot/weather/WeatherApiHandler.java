@@ -12,15 +12,19 @@ import org.springframework.web.client.RestTemplate;
 
 import kr.taeu.weatherBot.weather.domain.LocationInfo;
 import kr.taeu.weatherBot.weather.dto.CurrentWeatherResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 public class WeatherApiHandler {
   private static final String WEATHER_API_ENDPOINT = "https://api.openweathermap.org/data/2.5/onecall"
       + "?appid=4e5e44ee68d4171deaa0fc2f47faa60b&lang=kr&units=metric";
   private static final String seoulLatitude = "37.566706";
   private static final String seoulLongtitude = "126.978390";
+  private final RestTemplate restTemplate;
+  
   
   @RequestMapping(value="/test")
   @ResponseBody
@@ -35,9 +39,10 @@ public class WeatherApiHandler {
   }
   
   private LocationInfo callApi() {
-    RestTemplate restTemplate = new RestTemplate();
     String endpoint = WEATHER_API_ENDPOINT + "&lat=" + seoulLatitude + "&lon=" + seoulLongtitude;
     LocationInfo info = restTemplate.getForObject(endpoint, LocationInfo.class);
+    
+    log.info("locationInfo: " + info);
     
     return info;
   }

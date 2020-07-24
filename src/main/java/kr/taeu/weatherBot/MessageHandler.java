@@ -85,7 +85,7 @@ public class MessageHandler {
         log.info("현재 날씨 뿌려줌");
         CurrentWeatherResponse currentWeatherResponse = weatherApiHandler.getCurrentWeather();
         
-        String dt = LocalDateTime.ofInstant(Instant.ofEpochMilli(currentWeatherResponse.getDt()), TimeZone.getDefault().toZoneId())
+        String dt = LocalDateTime.ofInstant(Instant.ofEpochSecond(currentWeatherResponse.getDt()), TimeZone.getDefault().toZoneId())
             .format(DateTimeFormatter.ofPattern("YYYY-MM-DD HH:mm:ss"));
         
         this.reply(replyToken, Arrays.asList(

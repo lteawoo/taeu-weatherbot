@@ -89,7 +89,7 @@ public class MessageHandler {
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         
         this.reply(replyToken, Arrays.asList(
-            new TextMessage("현재날씨(\"+ dt +\" 기준)\n"
+            new TextMessage("현재날씨("+ dt +" 기준)\n"
                 + "서울\n"
                 + "기온: " + currentWeatherResponse.getTemp() + "\n")));
         
